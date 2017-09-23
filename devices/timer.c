@@ -91,7 +91,23 @@ timer_elapsed (int64_t then)
 void
 timer_wakeup(void)
 {
-//if(timerlist의 첫줄 ==tick) -> unblock
+  struct thread *tmp;
+  
+  struct list_elem *e;
+  for(e = list_begin(&sleeping_thread_list); e != list_end(&sleeping_thread_list);
+      e = list_next(e))
+  {
+    tmp = list_entry(e, struct thread, elem);
+    if(tmp->wakeup_time <= timer_ticks())
+    {
+      list_pop_front(&sleeping_thread_list);
+      thread_unblock(tmp);
+    }
+    else
+    {
+      break;
+    }
+  }
 }
 void
 timer_sleep (int64_t ticks) 
@@ -103,8 +119,6 @@ timer_sleep (int64_t ticks)
   list_insert_ordered(&sleeping_thread_list,&(now->elem), less_wakeup, NULL);
  
   thread_block();
-  // sleeping_thread를 만들어서 sleeping_tread_list에 삽입한다 
-  //timer_block()
 }
 
 /* Sleeps for approximately MS milliseconds.  Interrupts must be
