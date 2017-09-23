@@ -87,11 +87,18 @@ timer_elapsed (int64_t then)
 /* Sleeps for approximately TICKS timer ticks.  Interrupts must
    be turned on. */
 void
+timer_wakeup(void)
+{
+//if(timerlist의 첫줄 ==tick) -> unblock
+}
+void
 timer_sleep (int64_t ticks) 
 {
   int64_t start = timer_ticks ();
 
   ASSERT (intr_get_level () == INTR_ON);
+  // sleeping_thread를 만들어서 sleeping_tread_list에 삽입한다 
+  //timer_block()
   while (timer_elapsed (start) < ticks) 
     thread_yield ();
 }
