@@ -86,6 +86,24 @@ timer_elapsed (int64_t then)
 
 /* Sleeps for approximately TICKS timer ticks.  Interrupts must
    be turned on. */
+bool
+less_wakeup(const struct list_elem *a, const struct list_elem *b, void *aux){
+  const struct thread *a = list_entry(a, struct thread, elem);
+  const struct thread *b = list_entry(b, struct thread, elem);
+  
+  if(a->wakeup_time < b->wakeup_time){
+    return true;
+  }
+  esle{
+    if(a->wakeup_time == b->wakeup_time){
+      if(a->priority < b->priority)
+        return true;
+      else
+        return false;
+    }
+    else
+      return false;
+}
 void
 timer_wakeup(void)
 {
