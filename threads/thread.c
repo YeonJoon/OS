@@ -15,10 +15,14 @@
 #include "userprog/process.h"
 #endif
 
+/*git testing*/
 /* Random value for struct thread's `magic' member.
    Used to detect stack overflow.  See the big comment at the top
    of thread.h for details. */
 #define THREAD_MAGIC 0xcd6abf4b
+
+/*List of sleeping thread*/
+static struct list sleeping_thread_list;
 
 /* List of processes in THREAD_READY state, that is, processes
    that are ready to run but not actually running. */
@@ -33,6 +37,7 @@ static struct thread *idle_thread;
 
 /* Initial thread, the thread running init.c:main(). */
 static struct thread *initial_thread;
+
 
 /* Lock used by allocate_tid(). */
 static struct lock tid_lock;
@@ -92,6 +97,7 @@ thread_init (void)
   lock_init (&tid_lock);
   list_init (&ready_list);
   list_init (&all_list);
+  list_init (&sleeping_thread_list);
 
   /* Set up a thread structure for the running thread. */
   initial_thread = running_thread ();

@@ -17,8 +17,6 @@
 #error TIMER_FREQ <= 1000 recommended
 #endif
 
-struct list sleep_thread_list;
-
 /* Number of timer ticks since OS booted. */
 static int64_t ticks;
 
