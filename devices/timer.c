@@ -88,21 +88,22 @@ timer_elapsed (int64_t then)
    be turned on. */
 bool
 less_wakeup(const struct list_elem *a, const struct list_elem *b, void *aux){
-  const struct thread *a = list_entry(a, struct thread, elem);
-  const struct thread *b = list_entry(b, struct thread, elem);
+  const struct thread *A = list_entry(a, struct thread, elem);
+  const struct thread *B = list_entry(b, struct thread, elem);
   
-  if(a->wakeup_time < b->wakeup_time){
+  if(A->wakeup_time < B->wakeup_time){
     return true;
   }
-  esle{
-    if(a->wakeup_time == b->wakeup_time){
-      if(a->priority < b->priority)
+  else{
+    if(A->wakeup_time == B->wakeup_time){
+      if(A->priority < B->priority)
         return true;
       else
         return false;
     }
     else
       return false;
+  }
 }
 void
 timer_wakeup(void)
